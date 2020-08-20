@@ -29,14 +29,16 @@ By the end of this exercise, you should be able to:
 InterSystems IRIS for Health includes an installer method for creating a FHIR server namespace with a built-in resource repository. For our exercise we will make use of this method to create a brand new namespace called FHIRSERVER and we will set up it as a FHIR R4 server.
 
 1.  Select **InterSystems > Web Terminal** from the dropdown menu at the top of the IDE to open InterSystems Terminal. Supply **tech/demo** for credentials when asked. Run the following command to create a new IRIS for Health namespace called `FHIRServer`:
+
     &nbsp;&nbsp;&nbsp;`do ##class(HS.HC.Util.Installer).InstallFoundation("FHIRServer")`
 
 2.  When the command finishes running, from the IDE, open Management Portal by selecting **InterSystems > IRIS Management Portal** from the dropdown menu at the top. Terminal will be used again in the next section, so please do not close the Terminal window. Supply **tech/demo** for credentials in the Management Portal.
 
 3. From the Management Portal homepage, switch to the FHIRSERVER namespace and navigate to **Health** \&gt; **FHIR**** Configuration **\&gt;** Server Configuration **to set up a new FHIR R4 endpoint that stores FHIR data as JSON in a FHIR resource repository**.** Modify the following settings:
-  1. **Metadata** : HL7v40
-  2. **Interaction**** strategy**: _HS.FHIRServer.Storage.Json.InteractionsStrategy_
-  3. **URL** : /_csp/healthshare/fhirserver/fhir/r4_
+
+-  **Metadata** : HL7v40
+- **Interaction strategy**: _HS.FHIRServer.Storage.Json.InteractionsStrategy_
+- **URL** : /_csp/healthshare/fhirserver/fhir/r4_
 
 4. Click the /csp/healthshare/fhirserver/fhir/r4 endpoint, click **Edit** , and then select **Allow Unauthenticated Access**.
 
@@ -54,7 +56,7 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
 1.  Locate the pre-generated FHIR bundles (JSON files) under the **/shared/FHIRLab/samples** directory in the server container, accessible through the integrated IDE.
 
 
-2.  Expand the **samples** folder and double-click the first sample file (i.e., **Abbie_Ortiz_a2034af8-3bd9-4784-bbed-3b076c504115.json**) to see what a bundle of FHIR resources looks like in JSON.
+2.  Expand the **samples** folder and double-click the first sample file (i.e., **Allen_Runte_9e43a3bf-fb4f-4007-8a1f-d8e00e57d4e5.json**) to see what a bundle of FHIR resources looks like in JSON.
 
 3.  From **Web Terminal**, switch to the FHIRSERVER namespace that was created in the previous section.
 
@@ -72,34 +74,34 @@ In this section, we will use a REST client to manually interact with FHIRSERVER 
 
 ### Search for Patient data in FHIR Resource Repository
 
-1. First, open your REST Client to perform a search for Ciara Jenkins&#39;s patient resource by completing the fields below with the following values:
+1. First, open your REST Client to perform a search for Ciara Jenkins's patient resource by completing the fields below with the following values:
 
 **Headers** :
 
 - *Accept*: *application/fhir+json*
 - *Content-type*: *application/fhir+json*
 
-**HTTP Request** : `GET http://_YourIP_:_YourPort_/csp/healthshare/fhirserver/fhir/r4/Patient?family=Jenkins&amp;given=Ciara`
+**HTTP Request** : `GET http://localhost:52773/csp/healthshare/fhirserver/fhir/r4/Patient?family=Jenkins&given=Ciara`
 
-2. Submit the request and examine the response payload bearing Ciara Jenkins&#39;s Patient resource in a FHIR bundle and confirm that her ID is 1158.
+2. Submit the request and examine the response payload bearing Ciara Jenkins's Patient resource in a FHIR bundle and confirm that her ID is 1158.
 
 3. You can get any other information about her, including related resources such as AllergyIntolerance and Encounter, by adding `$everything` to the end of your URL:
 
-`https://52773b-30426825.labs.learning.intersystems.com/csp/healthshare/fhirserver/fhir/R4/Patient/1158/$everything`
+`http://localhost:52773/csp/healthshare/fhirserver/fhir/R4/Patient/1158/$everything`
 
 ### Update patient data in FHIR Resource Repository
 
-1. Update Ciara&#39;s data by creating a new Observation resource for her using the provided sample Observation input, corresponding to Ciara&#39;s BMI obtained from her recent test by completing the following steps:
+1. Update Ciara's data by creating a new Observation resource for her using the provided sample Observation input, corresponding to Ciara's BMI obtained from her recent test by completing the following steps:
 
-  1. Change HTTP Request to POST https://52773b-30426825.labs.learning.intersystems.com/csp/healthshare/fhirserver/fhir/R4/Observation
+  1. Change HTTP Request to POST http://localhost:52773/csp/healthshare/fhirserver/fhir/R4/Observation
   2. In the file explorer panel of your IDE, locate and open **NewObservation-Ciara.json** under the **/etc** directory.
   3. Make note of the LOINC code (39156-5) corresponding to BMI, as well the observation date (effectiveDateTime = **2020-08-15T10:55:05-04:00** ) and the BMI value (valueQuantity.value = **26.85** ) indicated in the sample input.
-  4. Copy the entire JSON content of this sample input file and paste into the **Body** section of the REST Client window (under the Body tab of Chrome&#39;s Advanced REST Client).
+  4. Copy the entire JSON content of this sample input file and paste into the **Body** section of the REST Client window (under the Body tab of Chrome's Advanced REST Client).
   5. Submit the request and verify that a **201 Created** response is returned from the server, indicating a successful creation and storage of the new Observation resource.
 
 2. To confirm resource creation, perform a search to retrieve the newly added Observation resource, by change the HTTP Request to
 
-`GET https://30426825.labs.learning.intersystems.com/csp/healthshare/fhirserver/fhir/R4/Patient/1158/Observation?code=39156-5&amp;date=2020-08-15`
+`GET http://localhost:52773/csp/healthshare/fhirserver/fhir/R4/Patient/1158/Observation?code=39156-5&date=2020-08-15`
 
 ## Construct a Simple FHIR Client App
 
@@ -129,24 +131,26 @@ In this section we will connect a sample FHIR client app to our FHIR server/repo
 > *   **plotly-latest.min.js**: Plotly ([https://plot.ly/javascript/](https://plot.ly/javascript/)) is a data visualization library, which our sample app uses to graph patient hemoglobin data on a chart.
 > ---
 
-2. Modify the **baseUrl** parameter in the the line 47 to make the client point to your FHIR server&#39;s FHIR R4 endpoint, by setting baseUrl to &#39;https://52773b-30426825.labs.learning.intersystems.com/csp/healthshare/fhirserver/fhir/R4&#39;
+2. Modify the **baseUrl** parameter in the the line 44 to make the client point to your FHIR server's FHIR R4 endpoint, by setting baseUrl to 'http://localhost:52773/csp/healthshare/fhirserver/fhir/R4'
 
 3. Scroll down to the **client.search()**, which performs a search for pre-diabetes patients. Follow the instruction to uncomment the line and line to narrow the search down to diabetes patients older than 65 years old.
 
+```
 client.search({
- type:&#39;Patient&#39;,
+ type:'Patient',
  query: {
  // Uncomment the following two lines
- // &#39;\_has:Condition:patient:code&#39;:&#39;15777000&#39;,
+ // '\_has:Condition:patient:code':'15777000',
 
-// birthdate=&#39;lt1955-01-01&#39;,
- \_sort:&#39;-birthdate&#39;,
+// birthdate='lt1955-01-01',
+ \_sort:'-birthdate',
  \_count: 7
  }})
+ ```
 
 4. Open the FHIR App web page by right clicking on **/shared/FHIRLab/app/FHIRResourceRepo.html** and select **Open With** \&gt; **Preview**. Notice in the URL that this is the page you were just editing, and it displays a list of seven patients. Supply the ID for Elias Barrows to his BMI observation values charted. How is Elias doing?
 
-5. (Optional) Challenge: Glucose level is an important factor for diabetes patients as well. Modify FHIRResourceRepo.html to get Elias&#39;s observation values of glucose level (LOINC 2339-0) charted. Note that the value range for oxygen saturation is 60–100 mm/dL. See FHIRResourceRepoSolution.html for the answer.
+5. (Optional) Challenge: Glucose level is an important factor for diabetes patients as well. Modify FHIRResourceRepo.html to get Elias's observation values of glucose level (LOINC 2339-0) charted. Note that the value range for oxygen saturation is 60–100 mm/dL. See FHIRResourceRepoSolution.html for the answer.
 
 ## (Bonus) Generate Your Own Synthetic Patients
 
@@ -157,14 +161,13 @@ In this section you will download and install Synthea Patient Generator on your 
 > 
 > ---
 
-1. Clone Synthea&#39;s GitHub page: [https://github.com/synthetichealth/synthea](https://github.com/synthetichealth/synthea)
+1. Clone Synthea's GitHub page: [https://github.com/synthetichealth/synthea](https://github.com/synthetichealth/synthea)
 2. Unzip synthea-master.zip into a local directory, which creates a folder called **synthea-master**.
 3. Open **synthea.properties** found under **/synthea-master/src/main/resources**.
 4. Set following properties so that the tool can generate FHIR R4 resources (the latest version of Synthea produces FHIR R4 resources by default). Then, click Save.
 
-`exporter.fhir\_R4.export = true`
-
-`generate.append\_numbers\_to\_person\_names = false`
+- `exporter.fhir\_R4.export = true`
+- `generate.append\_numbers\_to\_person\_names = false`
 
 	
     > ---
@@ -178,7 +181,7 @@ In this section you will download and install Synthea Patient Generator on your 
 
 `./run\_synthea`
 
-6. Using your computer&#39;s file browser, navigate to the **/synthea-master/output/fhir** directory, now containing JSON files for the patient data just generated.
+6. Using your computer's file browser, navigate to the **/synthea-master/output/fhir** directory, now containing JSON files for the patient data just generated.
 
 7. Using the IDE, create a new **test** folder by selecting the FHIRLab folder and then going to **File \&gt; New Folder**. Then, copy the generated files and make them available on the server container by dragging all the JSON files under **/synthea-master/output/fhir** into the new **test** folder.
 
