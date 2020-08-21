@@ -34,13 +34,13 @@ InterSystems IRIS for Health includes an installer method for creating a FHIR se
 
 2.  When the command finishes running, from the IDE, open Management Portal by selecting **InterSystems > IRIS Management Portal** from the dropdown menu at the top. Terminal will be used again in the next section, so please do not close the Terminal window. Supply **tech/demo** for credentials in the Management Portal.
 
-3. From the Management Portal homepage, switch to the FHIRSERVER namespace and navigate to **Health** \&gt; **FHIR**** Configuration **\&gt;** Server Configuration **to set up a new FHIR R4 endpoint that stores FHIR data as JSON in a FHIR resource repository**.** Modify the following settings:
+3. From the Management Portal homepage, switch to the FHIRSERVER namespace and navigate to **Health** > **FHIR Configuration** > **Server Configuration** to set up a new FHIR R4 endpoint that stores FHIR data as JSON in a FHIR resource repository. Modify the following settings:
 
--  **Metadata** : HL7v40
-- **Interaction strategy**: _HS.FHIRServer.Storage.Json.InteractionsStrategy_
-- **URL** : /_csp/healthshare/fhirserver/fhir/r4_
+    -  **Metadata** : HL7v40
+    - **Interaction strategy**: _HS.FHIRServer.Storage.Json.InteractionsStrategy_
+    - **URL** : /_csp/healthshare/fhirserver/fhir/r4_
 
-4. Click the /csp/healthshare/fhirserver/fhir/r4 endpoint, click **Edit** , and then select **Allow Unauthenticated Access**.
+4. Click the /csp/healthshare/fhirserver/fhir/r4 endpoint, click **Edit**, and then select **Allow Unauthenticated Access**.
 
 ## Populate the Repository with Synthetic Patient Data
 
@@ -64,7 +64,7 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
 
 4.  Execute the following command, making sure to specify the correct input directory location, as shown below. The command may take a while to load all 25 bundles, which are relatively large in size.
 
-    &nbsp;&nbsp;&nbsp;`FHIRSERVER> set sc = ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/home/project/shared/FHIRLab/samples”,"FHIRServer","/csp/healthshare/fhirserver/fhir/r4")`
+    &nbsp;&nbsp;&nbsp;`FHIRSERVER> set sc = ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/home/project/shared/FHIRLab/samples","FHIRServer","/csp/healthshare/fhirserver/fhir/r4")`
 
 5.  When the command finishes running, check the console to ensure that all 15 synthetic patients have been loaded successfully.
 
@@ -93,7 +93,7 @@ In this section, we will use a REST client to manually interact with FHIRSERVER 
 
 1. Update Ciara's data by creating a new Observation resource for her using the provided sample Observation input, corresponding to Ciara's BMI obtained from her recent test by completing the following steps:
 
-  1. Change HTTP Request to POST http://localhost:52773/csp/healthshare/fhirserver/fhir/R4/Observation
+  1. Change HTTP Request to `POST http://localhost:52773/csp/healthshare/fhirserver/fhir/R4/Observation`
   2. In the file explorer panel of your IDE, locate and open **NewObservation-Ciara.json** under the **/etc** directory.
   3. Make note of the LOINC code (39156-5) corresponding to BMI, as well the observation date (effectiveDateTime = **2020-08-15T10:55:05-04:00** ) and the BMI value (valueQuantity.value = **26.85** ) indicated in the sample input.
   4. Copy the entire JSON content of this sample input file and paste into the **Body** section of the REST Client window (under the Body tab of Chrome's Advanced REST Client).
@@ -148,7 +148,7 @@ client.search({
  }})
  ```
 
-4. Open the FHIR App web page by right clicking on **/shared/FHIRLab/app/FHIRResourceRepo.html** and select **Open With** \&gt; **Preview**. Notice in the URL that this is the page you were just editing, and it displays a list of seven patients. Supply the ID for Elias Barrows to his BMI observation values charted. How is Elias doing?
+4. Open the FHIR App web page by right clicking on **/shared/FHIRLab/app/FHIRResourceRepo.html** and select **Open With** > **Preview**. Notice in the URL that this is the page you were just editing, and it displays a list of seven patients. Supply the ID for Elias Barrows to his BMI observation values charted. How is Elias doing?
 
 5. (Optional) Challenge: Glucose level is an important factor for diabetes patients as well. Modify FHIRResourceRepo.html to get Elias's observation values of glucose level (LOINC 2339-0) charted. Note that the value range for oxygen saturation is 60–100 mm/dL. See FHIRResourceRepoSolution.html for the answer.
 
@@ -157,7 +157,7 @@ client.search({
 In this section you will download and install Synthea Patient Generator on your computer and generate your own synthetic patients as FHIR R4 resources.
 
 > ---
-> Synthea Patient Generator requires Java (JDK) 8.0 or higher installed on your computer. If not already installed, please install Java ([https://www.oracle.com/technetwork/java/javase/downloads/index.html)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)) before proceeding further.
+> Synthea Patient Generator requires Java (JDK) 8.0 or higher installed on your computer. If not already installed, please install Java ([https://www.oracle.com/technetwork/java/javase/downloads/index.html](https://www.oracle.com/technetwork/java/javase/downloads/index.html)) before proceeding further.
 > 
 > ---
 
@@ -166,8 +166,8 @@ In this section you will download and install Synthea Patient Generator on your 
 3. Open **synthea.properties** found under **/synthea-master/src/main/resources**.
 4. Set following properties so that the tool can generate FHIR R4 resources (the latest version of Synthea produces FHIR R4 resources by default). Then, click Save.
 
-- `exporter.fhir\_R4.export = true`
-- `generate.append\_numbers\_to\_person\_names = false`
+    - `exporter.fhir\_R4.export = true`
+    - `generate.append\_numbers\_to\_person\_names = false`
 
 	
     > ---
@@ -179,11 +179,11 @@ In this section you will download and install Synthea Patient Generator on your 
 
 5. Open Terminal on your computer and navigate to the **synthea** directory you recently cloned and execute the following command:
 
-`./run\_synthea`
+    `./run\_synthea`
 
 6. Using your computer's file browser, navigate to the **/synthea-master/output/fhir** directory, now containing JSON files for the patient data just generated.
 
-7. Using the IDE, create a new **test** folder by selecting the FHIRLab folder and then going to **File \&gt; New Folder**. Then, copy the generated files and make them available on the server container by dragging all the JSON files under **/synthea-master/output/fhir** into the new **test** folder.
+7. Using the IDE, create a new **test** folder by selecting the FHIRLab folder and then going to **File** > **New Folder**. Then, copy the generated files and make them available on the server container by dragging all the JSON files under **/synthea-master/output/fhir** into the new **test** folder.
 
 8. Submit your sample files into FHIRSERVER by repeating relevant steps in the section Populate the Repository with Synthetic Patient Data, starting at Step 3. Make sure to set the source directory to **/home/project/shared/FHIRLab/test**
 
