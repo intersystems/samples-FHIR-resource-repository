@@ -34,7 +34,7 @@ InterSystems IRIS for Health includes an installer method for creating a FHIR se
 
 2.  When the command finishes running, from the IDE, open Management Portal by selecting **InterSystems > IRIS Management Portal** from the dropdown menu at the top. Terminal will be used again in the next section, so please do not close the Terminal window. Supply **tech/demo** for credentials in the Management Portal.
 
-3. From the Management Portal homepage, switch to the FHIRSERVER namespace and navigate to **Health** > **FHIR Configuration** > **Server Configuration** to set up a new FHIR R4 endpoint that stores FHIR data as JSON in a FHIR resource repository. Modify the following settings:
+3. From the Management Portal homepage, switch to the FHIRSERVER namespace and navigate to **Health** > **FHIR Configuration** > **Server Configuration** to set up a new FHIR R4 endpoint that stores FHIR data as JSON in a FHIR resource repository. Click the **plus sign**(+) and enter the following settings. You might have to wait several minutes for the end point get created.
 
     -  **Metadata** : HL7v40
     - **Interaction strategy**: _HS.FHIRServer.Storage.Json.InteractionsStrategy_
@@ -64,17 +64,17 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
 
 4.  Execute the following command, making sure to specify the correct input directory location, as shown below. The command may take a while to load all 25 bundles, which are relatively large in size.
 
-    &nbsp;&nbsp;&nbsp;`FHIRSERVER> set sc = ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/home/project/shared/FHIRLab/samples","FHIRServer","/csp/healthshare/fhirserver/fhir/r4")`
+    &nbsp;&nbsp;&nbsp;`FHIRSERVER> set sc = ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/home/project/shared/samples","FHIRServer","/csp/healthshare/fhirserver/fhir/r4")`
 
 5.  When the command finishes running, check the console to ensure that all 15 synthetic patients have been loaded successfully.
 
 ## Use a REST Client to Search and Update Patient Data in FHIR Repository
 
-In this section, we will use a REST client to manually interact with FHIRSERVER via FHIR RESTful API. InterSystems IRIS for Health supports all client/server interactions defined under the FHIR specification, including create, read, update, delete, patch, and search. Let's start by creating a new Observation resource for a patient whose name is Abbie Ortiz.
+In this section, we will use a REST client to manually interact with FHIRSERVER via FHIR RESTful API. InterSystems IRIS for Health supports all client/server interactions defined under the FHIR specification, including create, read, update, delete, patch, and search. Let's start by searching for a patient named Ciara Jenkins.
 
 ### Search for Patient data in FHIR Resource Repository
 
-1. First, open your REST Client to perform a search for Ciara Jenkins's patient resource by completing the fields below with the following values:
+1. First, open your REST Client and complete the fields below with the following values:
 
 **Headers** :
 
@@ -133,7 +133,7 @@ In this section we will connect a sample FHIR client app to our FHIR server/repo
 
 2. Modify the **baseUrl** parameter in the the line 44 to make the client point to your FHIR server's FHIR R4 endpoint, by setting baseUrl to 'http://localhost:52773/csp/healthshare/fhirserver/fhir/R4'
 
-3. Scroll down to the **client.search()**, which performs a search for pre-diabetes patients. Follow the instruction to uncomment the line and line to narrow the search down to diabetes patients older than 65 years old.
+3. Scroll down to the **client.search()**, which performs a search for pre-diabetes patients. Follow the instruction to uncomment the line and line to narrow the search down to diabetes patients older than 65 years old. Click **Ctrl+S** to save the file.
 
 ```
 client.search({
