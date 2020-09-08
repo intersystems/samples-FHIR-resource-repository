@@ -60,7 +60,7 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
 
 3.  From **Web Terminal**, switch to the FHIRSERVER namespace that was created in the previous section.
 
-    &nbsp;&nbsp;&nbsp;`HSLIB> set namespace = "FHIRSERVER"`
+    &nbsp;&nbsp;&nbsp;`HSLIB> set $namespace = "FHIRSERVER"`
 
 4.  Execute the following command, making sure to specify the correct input directory location, as shown below. The command may take a while to load all 25 bundles, which are relatively large in size.
 
@@ -74,7 +74,7 @@ In this section, we will use a REST client to manually interact with FHIRSERVER 
 
 ### Search for Patient data in FHIR Resource Repository
 
-1. First, open your REST Client and complete the fields below with the following values:
+1. First, open your REST Client and complete the fields below with the following values: 
 
 **Headers** :
 
