@@ -41,6 +41,7 @@ InterSystems IRIS for Health includes an installer method for creating a FHIR se
     - **URL** : _/csp/healthshare/fhirserver/fhir/r4_
 
 4. Click the /csp/healthshare/fhirserver/fhir/r4 endpoint, click **Edit**, and then select **Allow Unauthenticated Access**.
+![Allow Unauthenticated Access is selected as specified](images\allow_unauthenticated_access.png)
 
 ## Populate the Repository with Synthetic Patient Data
 
@@ -54,7 +55,7 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
 15 synthetic patients (15 JSON files) have already been pre-generated for this exercise, and we will use these samples to populate the FHIR R4 resource repository of FHIRSERVER. If time allows, as an optional step at the end of this exercise, you can try installing Synthea Patient Generator on your computer and generate your own synthetic patients. For loading data into the resource repository, IRIS for Health provides a utility method that allows you to directly submit multiple FHIR bundles just by specifying the location of a directory where sample files are found.
 
 1.  Locate the pre-generated FHIR bundles (JSON files) under the **/shared/samples** directory in the server container, accessible through the integrated IDE.
-
+![FHIR bundles are under the shared/samples folder](images\sample_patients.png)
 
 2.  Expand the **samples** folder and double-click the first sample file (i.e., **Allen_Runte_9e43a3bf-fb4f-4007-8a1f-d8e00e57d4e5.json**) to see what a bundle of FHIR resources looks like in JSON.
 
@@ -67,6 +68,8 @@ In this section, we will populate FHIRSERVER's resource repository with realisti
     &nbsp;&nbsp;&nbsp;`FHIRSERVER> set sc = ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/home/project/shared/samples","FHIRServer","/csp/healthshare/fhirserver/fhir/r4")`
 
 5.  When the command finishes running, check the console to ensure that all 15 synthetic patients have been loaded successfully.
+![15 synthetic patients have been loaded successfully.](images\patients_load.png)
+
 
 ## Use a REST Client to Search and Update Patient Data in the FHIR Repository
 
@@ -96,8 +99,10 @@ Using the following steps, update Ciara’s data by creating a new Observation r
   1. Change the HTTP Request to `POST http://localhost:52773/csp/healthshare/fhirserver/fhir/r4/Observation`
   2. In the file explorer panel of your IDE, locate and open **NewObservation-Ciara.json** under the **/etc** directory.
   3. Make note of the LOINC code (39156-5) corresponding to BMI, as well the observation date (effectiveDateTime = **2020-08-15T10:55:05-04:00** ) and the BMI value (valueQuantity.value = **26.85** ) indicated in the sample input.
-  4. Copy the entire JSON content of this sample input file and paste into the **Body** section of the REST Client window (under the Body tab of Chrome's Advanced REST Client).
+  4. Copy the entire JSON content of this sample input file and paste into the **Body** section of your REST Client window.
   5. Submit the request and verify that a **201 Created** response is returned from the server, indicating a successful creation and storage of the new Observation resource.
+![Sample JSON content us pasted into Body Section and 201 Created response is returned](images\body.png)
+
 
 To confirm that the resource was created, perform a search to retrieve the newly added Observation resource, by changing the HTTP Request to
 
@@ -128,7 +133,7 @@ In this section we will connect a sample FHIR client app to our FHIR server/repo
 > ---
 > Please note that the sample app makes direct use of the following two free, open source JavaScript libraries, plus some custom JavaScript code to build out the webpage:
 > *   **jqFhir.js**: This is a [jQuery](https://jquery.com/)-based implementation of the **fhir.js** library, which provides a simple FHIR client module for performing basic CRUD (create, read, update and delete) operations. Please see [https://github.com/FHIR/fhir.js](https://github.com/FHIR/fhir.js) for more information.
-> *   **plotly-latest.min.js**: Plotly ([https://plot.ly/javascript/](https://plot.ly/javascript/)) is a data visualization library, which our sample app uses to graph patient hemoglobin data on a chart.
+> *   **plotly-latest.min.js**: [Plotly](https://plot.ly/javascript/) is a data visualization library, which our sample app uses to graph patient hemoglobin data on a chart.
 > ---
 
 2. Modify the **baseUrl** parameter in the line 44 to make the client point to your FHIR server's FHIR R4 endpoint, by setting baseUrl to 'http://localhost:52773/csp/healthshare/fhirserver/fhir/r4'
@@ -146,16 +151,19 @@ client.search({
     _count: 7
 ```
 
-4. Open the FHIR App web page by right clicking on **/shared/app/FHIRApp.html** and select **Open With** > **Preview**. Notice in the URL that this is the page you were just editing, and it displays a list of seven patients. Supply the Elias Barrows's ID in order to get his BMI observation values charted. How is Elias doing?
+4. Open the FHIR App web page by right clicking on **/shared/app/FHIRApp.html** and select **Open With** > **Preview**. Notice in the URL that this is the page you were just editing, and it displays a list of seven patients.
+![List of seven patients displayed](images\patients_list.png) 
 
-5. (Optional) Challenge: Glucose level is an important factor for diabetes patients as well. Modify FHIRApp.html to get Elias's observation values of glucose level (LOINC 2339-0) charted. Note that the value range for glucose is 60–100 mm/dL. See FHIRAppSolution.html for the answer.
+5. Supply the Elias Barrows's ID in order to get his BMI observation values charted. How is Elias doing?
+
+6. (Optional) Challenge: Glucose level is an important factor for diabetes patients as well. Modify FHIRApp.html to get Elias's observation values of glucose level (LOINC 2339-0) charted. Note that the value range for glucose is 60–100 mm/dL. See FHIRAppSolution.html for the answer.
 
 ## (Bonus) Generate Your Own Synthetic Patients
 
 In this section you will download and install Synthea Patient Generator on your computer and generate your own synthetic patients as FHIR R4 resources.
 
 > ---
-> Synthea Patient Generator requires Java (JDK) 8.0 or higher installed on your computer. If not already installed, please install Java ([https://www.oracle.com/technetwork/java/javase/downloads/index.html](https://www.oracle.com/technetwork/java/javase/downloads/index.html)) before proceeding further.
+> Synthea Patient Generator requires Java (JDK) 8.0 or higher installed on your computer. If not already installed, please install [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) before proceeding further.
 > 
 > ---
 
