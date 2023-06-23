@@ -13,7 +13,6 @@ InterSystems IRIS for Health™ provides a base FHIR® server implementation wit
 By the end of this exercise, you should be able to:
 
 *   Set up a FHIR resource repository using InterSystems IRIS for Health™
-*   Use the open-source Synthea™ tool to generate synthetic patient data
 *   Use a REST client to manually interact with the FHIR server via FHIR RESTful API
 *   Set up a simple web-based FHIR app to retrieve and display data from the FHIR repository
 
@@ -52,7 +51,7 @@ In this section, we will populate the `FHIRSERVER` resource repository with real
 >
 > ---
 
-Fifteen synthetic patients (15 JSON files) have already been pre-generated for this exercise, and we will use these samples to populate the FHIR R4 resource repository of `FHIRSERVER`. As an optional step at the end of this exercise, you can try installing the Synthea patient generator on your computer and create your own synthetic patients. 
+Fifteen synthetic patients (15 JSON files) have already been pre-generated for this exercise, and we will use these samples to populate the FHIR R4 resource repository of `FHIRSERVER`.
 
 IRIS for Health provides a utility method that allows you to directly submit multiple FHIR bundles to the resource repository just by specifying the location of a directory where sample files are found. To load the synthetic patient data into the resource repository: 
 
@@ -166,45 +165,8 @@ client.search({
 
 6. (Optional) **Challenge**: Glucose level is also an important factor for diabetes patients. Modify `FHIRApp.html` to chart Elias's observation values of his glucose level (LOINC 2339-0). Note that the value range for glucose is 60–100 mm/dL. See `FHIRAppSolution.html` for the solution.
 
-## (Bonus) Generate Your Own Synthetic Patients
-
-In this section you will download and install the Synthea patient generator on your computer and produce your own synthetic patients as FHIR R4 resources.
-
-> ---
-> Synthea's patient generator requires that Java (JDK) 8.0 or higher be installed on your computer. If needed, please install [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) before proceeding.
-> 
-> ---
-
-1. Clone [Synthea's GitHub page](https://github.com/synthetichealth/synthea) to your local machine.
-
-2. Open `synthea.properties` found under `/synthea/src/main/resources`.
-
-3. Set the following properties so that the tool can generate FHIR R4 resources (the latest version of Synthea produces FHIR R4 resources by default). Then, click **Save**.
-
-    - `exporter.csv.export = true`
-    - `generate.append_numbers_to_person_names = false`
-
-	
-    > ---
-    > Setting `exporter.csv.export` to *true* instructs the tool to produce CSV files corresponding to the FHIR resources generated. This can be useful because it allows users to view data for all patients in table format.
-	> 
-    > Setting `generate.append_numbers_to_person_names` to *false* disables the default behavior of adding random numbers to patient names. Removing the numbers makes the synthetic data more realistic.
-	>
-    > ---
-
-4. Open the Terminal on your computer and navigate to the `synthea` directory you recently cloned, then execute the following command:
-
-    `./run_synthea`
-
-5. Using your computer's file browser, navigate to the `/synthea/output/fhir` directory, which now contains JSON files for the patient data just generated.
-
-6. Using the IDE, create a new `test` folder by selecting the `FHIRLab` folder and then going to **File** > **New Folder**. Then, copy the generated files and make them available on the server container by dragging all the JSON files under `/synthea/output/fhir` in your computer into the new `test` folder in the IDE.
-
-7. Submit your sample files into `FHIRSERVER` by repeating the relevant steps in the section *Populate the Repository with Synthetic Patient Data*, starting at Step 4. Be sure to set the source directory to `/home/project/FHIRLab/test`.
-
-8. Try accessing your new patients by performing a query from a REST client or by further tweaking the internal queries of the sample FHIR app.
 
 ## Summary
 
-In this exercise, we used InterSystems IRIS for Health to set up a FHIR server with an internal FHIR repository and loaded the repository with synthetic patients. You then saw how the server interacts manually with client applications through a REST client and how it operates through a simple FHIR app. Feel free to continue experimenting with the FHIR resource repository by adding more data or setting up your own application.
+In this exercise, we used InterSystems IRIS for Health to set up a FHIR server with an internal FHIR repository and loaded the repository with synthetic patients. You then saw how the server interacts manually with client applications through a REST client and how it operates through a simple FHIR app. Feel free to continue experimenting with the FHIR resource repository by setting up your own application.
 </main>
